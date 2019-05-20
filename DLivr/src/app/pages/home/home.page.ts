@@ -14,16 +14,12 @@ export class HomePage implements OnInit {
   constructor(private menuCtrl: MenuController, private userService : ClientsService) { }
 
   ngOnInit() {
-    // GET localhost:8298/package-management/packages/getPackagesSender 
-    // returneaza un json care repezinta un obiect cu urmatoarele campuri: 
-    // id,namePackage,senderAddress,receiverAddress,kilograms,phoneNumberSender,
-    // phoneNumberReceiver,senderName,receiverName,length,width,height. Length,width,
-    // height sunt de tip int
-    this.userService.getPackages()
-    .subscribe(data => {
-      console.log("Getting data about packages");
-      this.notifications = data as [];
 
+    this.userService.getPackages()
+    .subscribe((packages : Array<Package>) => 
+    {
+      console.log("We have " + packages.length + " packages");
+      this.notifications = packages;
     }, error => {
       console.log("Can't get data about packages");
       console.log(error);

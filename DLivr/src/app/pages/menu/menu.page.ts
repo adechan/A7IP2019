@@ -8,9 +8,10 @@ import { ClientsService } from 'src/app/services/clients.service';
   templateUrl: './menu.page.html',
   styleUrls: ['./menu.page.scss'],
 })
-export class MenuPage implements OnInit {
+export class MenuPage {
 
   name: String = '';
+  
   clientPages = [
     {
       title: 'Home',
@@ -68,15 +69,25 @@ export class MenuPage implements OnInit {
   ];
 
   selectedPath = '';
-  constructor(private router: Router, private userService: ClientsService,) {
-    this.router.events.subscribe((event: RouterEvent) => {
+  constructor(private router: Router, private userService: ClientsService) 
+  {
+    if (!userService.loggedIn)
+      this.userService.gotoLoginPage();
+
+    console.log(this.userService.editPackage);
+
+    this.userService.router.events.subscribe((event: RouterEvent) => 
+    {
+      if (event.url)
+      {
+        console.log("click: " + event.url);
         this.selectedPath = event.url;
+      }
     });
 
-    console.log()
     this.userService.getProfileInfoSender()
     .subscribe(data => {
-      console.log("Can get the name.");
+      console.log("Profile info:");
       this.name = data['name'];
       console.log(JSON.stringify(data));
 
@@ -86,17 +97,22 @@ export class MenuPage implements OnInit {
     });
    }
 
-  ngOnInit() {
-  }
-
-  changeUserType() {
-    if (this.userService.userType === 'client') {
+  changeUserType() 
+  {
+    if (this.userService.userType === 'client') 
+    {
       this.userService.changeToDriver();
-      this.router.navigate(['app/menu/homedriver']);
-    } else {
+      this.userService.router.navigate(['app/menu/homedriver']);
+    }
+    else 
+    {
       this.userService.changeToClient();
-      this.router.navigate(['app/menu/home']);
+      this.userService.router.navigate(['app/menu/home']);
     }
   }
 
+  logout()
+  {
+    this.userService.logout();
+  }
 }
