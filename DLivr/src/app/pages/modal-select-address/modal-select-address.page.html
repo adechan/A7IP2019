@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title> Pick Address </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-searchbar [(ngModel)]="autocomplete.input" (ionChange)="updateSearchResults()" color="light" placeholder="Type here"></ion-searchbar>
+
+    <ion-list [hidden]="autocompleteItems.length == 0">
+        <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)" color >
+          <label style="color:white; font-size: 14px"><ion-icon name="pin" color="primary" slot="start"></ion-icon> {{ item.description }} </label>
+        </ion-item>
+      </ion-list>
+</ion-content>

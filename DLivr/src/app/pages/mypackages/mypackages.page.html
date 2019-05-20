@@ -1,4 +1,5 @@
 <ion-header>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
     <ion-toolbar>
         <ion-buttons slot="start">
             <ion-menu-button color="light"></ion-menu-button>
@@ -101,6 +102,8 @@
             <p id = "formtext"> Receiver's Address</p> 
             <ion-item lines="none" class ="itemform">
               <ion-input formControlName = "receiverAdress" name = "receiverAdress" class ="inputClass" id = "pickupAddressInput" [(ngModel)]="receiverAdress" type = "text" placeholder = "Receiver's Address" required></ion-input>
+            
+              <ion-button (click)="pickReceiverAddress()"> Pick receiver Address </ion-button>
             </ion-item>
 
             <div  style="color:rgb(253, 101, 101); font-size: 12px;" class = "error-messages" *ngIf=" f.receiverAdress.errors">
@@ -113,6 +116,7 @@
             <p id = "formtext"> Sender's Address </p> 
             <ion-item lines="none"  class ="itemform">
              <ion-input formControlName = "senderAdress" name = "senderAdress" class ="inputClass" id = "deliveryAddressInput" [(ngModel)]="senderAdress" type = "text" placeholder = " Sender's Address" required></ion-input>
+             <ion-button (click)="pickSenderAddress()"> Pick Sender Address </ion-button>
             </ion-item>
 
             <div  style="color:rgb(253, 101, 101); font-size: 12px;" class = "error-messages" *ngIf=" f.senderAdress.errors">

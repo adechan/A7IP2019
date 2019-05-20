@@ -9,6 +9,8 @@ import { IonicModule } from '@ionic/angular';
 import { IonicRatingModule } from 'ionic4-rating';
 
 import { MypackagesPage } from './mypackages.page';
+import { ModalSelectAddressPageModule } from '../modal-select-address/modal-select-address.module';
+import { ModalSelectAddressPage } from '../modal-select-address/modal-select-address.page';
 
 const routes: Routes = [
   {
@@ -19,12 +21,16 @@ const routes: Routes = [
 
 
 @NgModule({
+  entryComponents: [
+    ModalSelectAddressPage
+  ],
   imports: [
     CommonModule,
     IonicRatingModule,
     ReactiveFormsModule,
     FormsModule,
     IonicModule,
+    ModalSelectAddressPageModule,
     RouterModule.forChild(routes)
   ],
   declarations: [MypackagesPage]

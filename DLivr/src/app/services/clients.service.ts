@@ -196,7 +196,6 @@ export class ClientsService implements AfterViewInit {
       "width": newPackage['width'],
       "height": newPackage['height']
     };
-    
     console.log(body);
     return this.http.post('http://localhost:8298/package-management/packages/registerPackage', 
       JSON.stringify(body), 
@@ -279,7 +278,7 @@ export class ClientsService implements AfterViewInit {
 
   // HOMEPAGE_ driver: get
   getPackagesInAreaOf(location: String) {
-    return this.http.get('http://localhost:8298/package-management/packages/getPackages/'
+    return this.http.get('http://localhost:8298/package-management/packages/getPackagesNear/'
     + location.toString(), this.makeAuthorizedHeader());
   }
   

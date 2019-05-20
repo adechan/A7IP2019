@@ -1,9 +1,9 @@
 import { Component, OnInit} from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ModalController } from '@ionic/angular';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ClientsService } from 'src/app/services/clients.service';
-import { AbstractControl } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { ModalSelectAddressPage } from '../modal-select-address/modal-select-address.page';
+import { OverlayEventDetail } from '@ionic/core';
 
 declare var google: any;
 
@@ -33,37 +33,64 @@ export class MypackagesPage implements OnInit {
 
   selectedPackage = [];
 
-  id : string = "";
+  id: string = "";
 
   rating;
 
   get f() { return this.addPackageForm.controls; }
 
+  public pickReceiverAddress() {
+    this.presentReceiverAddressModal();
+  }
+
+  async presentReceiverAddressModal() {
+    const modal = await this.modalController.create({
+      component: ModalSelectAddressPage,
+      componentProps: { addressParameter: '' }
+    });
+
+    modal.onDidDismiss().then((detail: OverlayEventDetail) => {
+      if (detail !== null) {
+        this.receiverAdress = detail.data;
+      }
+   });
+
+   await modal.present();
+  }
+
+  public pickSenderAddress() {
+    this.presentSenderAddressModal();
+  }
+
+  async presentSenderAddressModal() {
+    const modal = await this.modalController.create({
+      component: ModalSelectAddressPage,
+      componentProps: { addressParameter: '' }
+    });
+
+    modal.onDidDismiss().then((detail: OverlayEventDetail) => {
+      if (detail !== null) {
+        this.senderAdress = detail.data;
+      }
+   });
+
+   await modal.present();
+  }
+
   submitForm() {
     this.submitted = true;
 
-    // stop here if form is invalid
     if (this.addPackageForm.invalid) {
       console.log('Add package form invalid');
         return;
-    } 
+    }
   }
-    
-  toArray(object) : Array<any>
-  {
+
+  toArray(object): Array<any> {
     return Object.keys(object).map(function(key) {
       return [Number(key), object[key]];
     });
   }
-
-  // validateAddress(userService: ClientsService)
-  // {
-  //   console.log("Validate address test");
-
-  //   return (control: AbstractControl): Observable<ValidationErrors> => {
-  //     return userService.validateAddress();
-  //   };
-  // }
 
   getAllPackages()
   {
@@ -143,8 +170,11 @@ constructor(
     private menuCtrl: MenuController, 
     private userService: ClientsService,
     public formBuilder: FormBuilder,
-  ) 
-  {
+    public modalController: ModalController
+  ) {
+
+   
+
     console.log('email received in mypackages: ' + this.userService.email);
 
     this.getAllPackages();
@@ -162,14 +192,14 @@ constructor(
         [
           Validators.required,
           Validators.minLength(3),
-          Validators.maxLength(60),
+          Validators.maxLength(320),
         ]
       )),
       receiverAdress: new FormControl('', Validators.compose(
         [
           Validators.required,
           Validators.minLength(3),
-          Validators.maxLength(60),
+          Validators.maxLength(320),
         ]
       )),
       receiverName: new FormControl('', Validators.compose(
@@ -312,6 +342,7 @@ constructor(
     }
 
     var newPackage = this.makePackage(
+      this.userService.email,
       this.selectedPackage['id'],
       this.namePackage, 
       this.senderAdress,
@@ -385,6 +416,7 @@ constructor(
       }
 
       var newPackage = this.makePackage(
+        this.userService.email,
         -1,
         this.namePackage, 
         this.senderAdress,
@@ -397,7 +429,7 @@ constructor(
         this.kilograms,
         this.height,
         this.width,
-        "Ready"
+        'Ready'
       );
 
       console.log(newPackage);
@@ -490,10 +522,11 @@ constructor(
   }
 
 
-  makePackage(id, namePackage, senderAdress, receiverAdress, receiverName, senderName, phoneNumberReceiver, 
+  makePackage(emailSender, id, namePackage, senderAdress, receiverAdress, receiverName, senderName, phoneNumberReceiver, 
     phoneNumberSender, length, kilograms, height, width, status){
     return {
-      "id": id,
+      "emailSender": emailSender,
+      "id": id, 
       "number": (this.packages.length + 1).toString(),
       "namePackage": namePackage,
       "status": status,
@@ -517,6 +550,7 @@ constructor(
   {
 
     this.packages.push(this.makePackage(
+      this.userService.email,
       id,
       namePackage, 
       senderAdress, 

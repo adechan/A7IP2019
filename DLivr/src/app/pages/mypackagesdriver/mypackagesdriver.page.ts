@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientsService } from 'src/app/services/clients.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
+import { ModalSelectAddressPage } from '../modal-select-address/modal-select-address.page';
 
  interface myData
 {
@@ -16,12 +17,23 @@ export class MypackagesdriverPage implements OnInit {
 
   packages = [];
 
-  constructor(private myFirstService : ClientsService,public alertController: AlertController,private alertCtrl: AlertController) {
+  constructor(private myFirstService: ClientsService,
+              public alertController: AlertController,
+              private alertCtrl: AlertController,
+              public modalController: ModalController) {
     /*this.packages = JSON.parse(localStorage.getItem("mypackages.packages"));
     console.log("packages: " + JSON.stringify(this.packages[0].pickupAddress));*/
 
   }
-  
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: ModalSelectAddressPage,
+      componentProps: { value: 123 }
+    });
+    return await modal.present();
+  }
+
   ngOnInit() {
     this.myFirstService.mypackagesdriverget()
       .subscribe(data  => {
@@ -54,7 +66,7 @@ export class MypackagesdriverPage implements OnInit {
         {
           text: 'Cancel',
           role: 'cancel',
-  
+
         },
         {
           text: 'Ok',
@@ -70,11 +82,11 @@ export class MypackagesdriverPage implements OnInit {
        header: hd.toString(),
        subHeader: '',
        message:
-       //"" + msg,
+       // "" + msg,
    msg.toString(),
        buttons: ['OK']
      });
- 
+
      await alert.present();
    }
 }

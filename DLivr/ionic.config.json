@@ -4,5 +4,9 @@
     "cordova": {}
   },
   "type": "angular",
-  "id": "4da7fb0e"
+  "id": "4da7fb0e",
+  "proxies" : [{
+    "path" : "/api",
+    "proxyUrl" : "https://maps.googleapis.com/maps/api"}
+  ]
 }
