@@ -48,7 +48,10 @@ export class PaymentPage implements OnInit {
 
 
 
-  constructor(private myFirstService : ClientsService,public alertController: AlertController,private fb: FormBuilder) {
+  constructor(private myFirstService : ClientsService,public alertController: AlertController,private fb: FormBuilder) 
+  {
+    if (!myFirstService.loggedIn)
+      myFirstService.gotoLoginPage();
   }
 
   ngOnInit() {

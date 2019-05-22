@@ -20,45 +20,43 @@ export class SettingsPage implements OnInit {
   address5: String = '';
 
   constructor(private userService: ClientsService, 
-    public alertController: AlertController,) {
+    public alertController: AlertController) 
+  {
+    console.log("HELLO?");
+    //GET localhost:8298/account-management/accountManagement/getProfileInformation/driver returneaza 
+    //informatiile de profil pentru un driver ( email,name,phone_number,country,address1,address2,address3,address4,address5 ). 
+    //Adresele pot fi nule.
 
-  this.userService.getRating(this.userService.email)
-  .subscribe(data => {
-    console.log(this.userService.email);
-    this.rating = data['rating'];
+    this.userService.getProfileInfoSender()
+    .subscribe(data => 
+    {
+      console.log('Getting data from server'+  JSON.stringify(data));
+      this.email = data['email'];
+      this.name = data['name'];
+      this.phoneNumber = data['phone_number'];
+      this.country = data['country'];
+      this.address1 = data['address1'];
+      this.address2 = data['address2'];
+      this.address3 = data['address3'];
+      this.address4 = data['address4'];
+      this.address5 = data['address5'];
 
-  }, error => {
-    console.log('Unable to get rating');
-    console.log(error);
-
-    //this.userService.presentWarning("Formular Invalid", "A aparut o problema cu informatiile pe care le-ati trimis");
-  });
-
-
-  //GET localhost:8298/account-management/accountManagement/getProfileInformation/driver returneaza 
-  //informatiile de profil pentru un driver ( email,name,phone_number,country,address1,address2,address3,address4,address5 ). 
-  //Adresele pot fi nule.
-
-  this.userService.getProfileInfoSender()
-  .subscribe(data => {
-    console.log('Getting data from server'+  JSON.stringify(data));
-    this.email = data['email'];
-    this.name = data['name'];
-    this.phoneNumber = data['phone_number'];
-    this.country = data['country'];
-    this.address1 = data['address1'];
-    this.address2 = data['address2'];
-    this.address3 = data['address3'];
-    this.address4 = data['address4'];
-    this.address5 = data['address5'];
-
-  }, error => {
-    console.log('Unable to get info');
-    console.log(error);
-
-
-  });
+      this.userService.getRating(this.email)
+      .subscribe(data => {
+        console.log(this.userService.email);
+        this.rating = data['rating'];
   
+      }, error => {
+        console.log('Unable to get rating');
+        console.log(error);
+  
+        //this.userService.presentWarning("Formular Invalid", "A aparut o problema cu informatiile pe care le-ati trimis");
+      });
+
+    }, error => {
+      console.log('Unable to get info');
+      console.log(error);
+    });
   }
 
   ngOnInit() {

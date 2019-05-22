@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ClientsService } from 'src/app/services/clients.service';
 
 @Component({
   selector: 'app-help',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HelpPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private userService: ClientsService
+  ) 
+  { 
+    if (!userService.loggedIn)
+      this.userService.gotoLoginPage();
+  }
 
   ngOnInit() {
   }
