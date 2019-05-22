@@ -35,6 +35,7 @@ export class MypackagesPage implements OnInit {
   selectedPackage = [];
 
   id: string = "";
+  pin: string = "";
 
   rating;
 
@@ -174,8 +175,8 @@ constructor(
     public formBuilder: FormBuilder,
     public modalController: ModalController
   ) {
-
-   
+    if (!userService.loggedIn)
+      this.userService.gotoLoginPage();
 
     console.log('email received in mypackages: ' + this.userService.email);
 
@@ -534,6 +535,7 @@ constructor(
       "number": (this.packages.length + 1).toString(),
       "namePackage": namePackage,
       "status": status,
+      //   "senderAdress": encodeURI(senderAdress),
       "senderAdress": senderAdress,
       "receiverAdress": receiverAdress,
       "receiverName": receiverName,

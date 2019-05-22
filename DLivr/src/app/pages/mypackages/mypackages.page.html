@@ -21,7 +21,9 @@
               <ion-card-header>
                 <ion-card-title> {{package.namePackage}} </ion-card-title>
               </ion-card-header>
+
               <ion-card-content> Status: {{package.status}} Pin: {{package.pin}}</ion-card-content>
+
             </ion-label>
 
             <ion-icon *ngIf="package.status === 'Ready'" 

@@ -18,39 +18,37 @@
     <ion-item>
       <ion-label color="light">
         Pickup Address
-        <p> {{ selectedPackage.senderAdress }} </p>
+        <p>{{selectedPackage.senderAdress}}</p>
       </ion-label>
       <ion-icon name="pin" color="primary" slot="start"></ion-icon>
     </ion-item>
     <ion-item>
       <ion-label color="light">
         Package Sender's Name
-        <p> {{ selectedPackage.senderName }} </p>
+        <p>{{selectedPackage.senderName}}</p>
       </ion-label>
       <ion-icon name="person" color="primary" slot="start"></ion-icon>
     </ion-item>
     <ion-item>
         <ion-label color="light">
           Phone Number Package Sender
-          <p>{{ selectedPackage.phoneNumberSender }}</p>
+          <p>{{selectedPackage.phoneNumberSender}}</p>
         </ion-label>
         <ion-icon name="call" color="primary" slot="start"></ion-icon>
       </ion-item>
-
-
 
     <ion-label color="secondary" style="padding-left: 20px;">End Point Information</ion-label>
     <ion-item>
       <ion-label color="light">
         Deliver Address
-        <p>{{ selectedPackage.receiverAdress }}</p>
+        <p>{{selectedPackage.receiverAdress}}</p>
       </ion-label >
       <ion-icon name="pin" color="secondary" slot="start"></ion-icon>
     </ion-item>
     <ion-item>
         <ion-label color="light">
           Package Receiver's Name
-          <p>{{ selectedPackage.receiverName }}</p>
+          <p>{{selectedPackage.receiverName}}</p>
         </ion-label>
         <ion-icon name="person" color="secondary" slot="start"></ion-icon>
       </ion-item>
@@ -58,7 +56,7 @@
     <ion-item>
         <ion-label color="light">
           Phone Number Package Receiver
-          <p>{{ selectedPackage.phoneNumberReceiver }}</p>
+          <p>{{selectedPackage.phoneNumberReceiver}}</p>
         </ion-label>
         <ion-icon name="call" color="secondary" slot="start"></ion-icon>
       </ion-item>
@@ -66,10 +64,10 @@
       <ion-label color="warning" style="padding-left: 20px;">Package Details</ion-label>
     <ion-item>
         <ion-label color="light">
-        <p> Kilograms: {{ selectedPackage.kilograms }}</p>
-        <p> Length: {{ selectedPackage.length }}</p>
-        <p> Width: {{ selectedPackage.width }}</p>
-        <p> Height: {{ selectedPackage.height }} </p>
+        <p> Kilograms: {{selectedPackage.kilograms}}</p>
+        <p> Length: {{selectedPackage.length}}</p>
+        <p> Width: {{selectedPackage.width}}</p>
+        <p> Height: {{selectedPackage.height}} </p>
       
       </ion-label>
           
@@ -79,9 +77,9 @@
       <ion-label color="tertiary" style="padding-left: 20px;">Delivery Details</ion-label>
     <ion-item>
         <ion-label color="light">
-        <p> Distance: 12 km.</p>
-        <p> Est. payment: 34.5$</p>
-        <p> Est. drive time: 120 mins.</p>
+        <p> Distance: distance </p>
+        <p> Est. payment: payment</p>
+        <p> Est. drive time: time</p>
       </ion-label>
           
         <ion-icon name="navigate" color="tertiary" slot="start"></ion-icon>

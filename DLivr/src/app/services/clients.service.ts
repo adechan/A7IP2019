@@ -12,9 +12,8 @@ declare var google: any;
 @Injectable({
   providedIn: 'root'
 })
-export class ClientsService implements AfterViewInit {
-
-;
+export class ClientsService
+{
   loggedIn = false;
   accessToken: String = '';
   email: String = '';
@@ -26,12 +25,37 @@ export class ClientsService implements AfterViewInit {
   // host: String = 'localhost';
   // host: String = '192.168.0.102';
 
-  ngAfterViewInit()
+  constructor(private http: HttpClient, public alertController: AlertController, public router: Router) 
   {
+    // BROKEN??????
+    // const token = JSON.parse(localStorage.getItem('DLivr_accessToken'));
+    // console.log("Access token in local storage = " + token);
+
+    // if (token != null)
+    // {
+    //   console.log('Using access token from local storage');
+    //   this.accessToken = token;
+    //   const profileInfo = this.getProfileInfoSender();
+      
+    //   this.loggedIn = true;
+    //   this.email = profileInfo['email'];
+    // }
   }
 
-  constructor(private http: HttpClient, public alertController: AlertController, private router: Router) 
+  logout()
   {
+    console.log("logout");
+    this.loggedIn = false;
+    this.accessToken = '';
+    this.email = '';
+    this.userType = 'client';
+    localStorage.setItem('DLivr_accessToken', null);
+    this.router.navigateByUrl('login');
+  }
+
+  gotoLoginPage()
+  {
+    this.router.navigateByUrl('login');
   }
 
   // REGISTER : post
@@ -90,6 +114,7 @@ export class ClientsService implements AfterViewInit {
       this.accessToken = data['token'];
       this.email = JSON.parse(credentials)['email'];
       this.loggedIn = true;
+      localStorage.setItem('DLivr_accessToken', JSON.stringify(this.accessToken));
       
       console.log('Access token received:' + this.accessToken);
       console.log('Email received:' + this.email);
@@ -117,19 +142,6 @@ export class ClientsService implements AfterViewInit {
     );
   }
 
-  // async presentRating()
-  // {
-  //   const alert = await this.alertController.create({
-  //     message: '<rating [rate]="rate"' +
-  //       'readonly="false"' +
-  //       'size="default" ' +
-  //       '(rateChange)="onRateChange($event)">' +
-  //     '</rating>',
-  //     buttons: ['OK']
-  //   });
-  //   await alert.present();
-  // }
-
   changeToDriver()
   {
     this.userType = 'driver';
@@ -148,9 +160,9 @@ export class ClientsService implements AfterViewInit {
       subHeader: '',
       message:
    //   "" + msg,
-  msg.toString(),
-      buttons: ['OK']
-    });
+      msg.toString(),
+        buttons: ['OK']
+      });
 
     await alert.present();
   }
@@ -170,25 +182,6 @@ export class ClientsService implements AfterViewInit {
   getPackages()
   {
     return this.http.get('http://localhost:8298/package-management/packages/getPackagesSender', this.makeAuthorizedHeader());
-  }
-
-  // a try of validate address
-  validateAddress()
-  {
-    var address1 = document.getElementById('pickupAddressInput');
-    //var address2 = document.getElementById('deliveryAddressInput');
-
-    this.geocoder = new google.maps.Geocoder();
-    this.geocoder.geocode({'address': address1}, function(results, status) {
-      if (status === 'OK') 
-      {
-        console.log("Address is good.");
-      }
-      else 
-      {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
-    });
   }
 
   truncateEmailHost(email) : String{
@@ -254,27 +247,13 @@ export class ClientsService implements AfterViewInit {
 
   getCards()
   {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization':'Bearer ' + this.accessToken
-      })  
-      };
-      
-    return this.http.get('http://localhost:8298/account-management/accountManagement/getCards',httpOptions)
+    return this.http.get('http://localhost:8298/account-management/accountManagement/getCards', this.makeAuthorizedHeader());
 
   }
 
-  addCard(card: Card){
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization':'Bearer ' + this.accessToken
-      })  
-      };
-
-    return this.http.post<any>('http://localhost:8298/account-management/accountManagement/addCard', card, httpOptions )
+  addCard(card: Card)
+  {
+    return this.http.post('http://localhost:8298/account-management/accountManagement/addCard', card, this.makeAuthorizedHeader());
   }
 
 
@@ -287,7 +266,7 @@ export class ClientsService implements AfterViewInit {
         'Access-Control-Allow-Origin': '*'
 
       })  
-      };
+    };
 
     return this.http.delete('http://localhost:8298/account-management/accountManagement/deleteCard/'+ card, httpOptions )
     
@@ -295,10 +274,50 @@ export class ClientsService implements AfterViewInit {
 
   // HOMEPAGE_ driver: get
   getPackagesInAreaOf(location: String) {
-    return this.http.get('http://localhost:8298/package-management/packages/getPackagesNear/'
-    + location.toString(), this.makeAuthorizedHeader());
+    return this.http.get('http://localhost:8298/package-management/packages/getPackagesNear/'+ location, this.makeAuthorizedHeader());
   }
   
+  // HOMEPAGE_driver Modify Status: put
+  modifyStatus(id: String)
+  {
+    const body = {
+      "id" : id,
+      "status" : 'Accepted'
+    }
+    return this.http.put('http://localhost:8298/package-management/packages/modifyStatus', body , this.makeAuthorizedHeader());
+  }
+
+  modifyStatusDelivered(id: number, pin: number){
+    console.log(' Body ul ptr "Delivered" ');
+    console.log(' id ' + id);//Delivered
+    console.log(' pin ' + pin);//Delivered
+
+    const body = {
+      "id" : id,
+      "status" : "Delivered",
+      "pin": pin
+    };
+    return this.http.put('http://localhost:8298/package-management/packages/modifyStatus',body, this.makeAuthorizedHeader());
+  }
+
+  modifyStatusAccepted(id: number){
+    console.log(' Body ul ptr "Accepted" ');
+    console.log(' id ' + id);//Accepted
+    const body = {
+      "id" : id,
+      "status" : "Accepted"
+    };
+    return this.http.put('http://localhost:8298/package-management/packages/modifyStatus',body, this.makeAuthorizedHeader());
+  }
+
+  modifyStatusInDelivery(id: number){
+    console.log(' Body ul ptr "In Delivery" ');
+    console.log(' id ' + id);//In Delivery
+    const body = {
+      "id" : id,
+      "status" : "In Delivery"
+    };
+    return this.http.put('http://localhost:8298/package-management/packages/modifyStatus',body, this.makeAuthorizedHeader());
   
   // FORGOT_PASSWORD: get
   generatePassword(email : String)
