@@ -30,6 +30,7 @@ export class MypackagesPage implements OnInit {
   kilograms: string ="";
   height: string = "";
   width: string = "";
+  pin: string = "";
 
   selectedPackage = [];
 
@@ -116,7 +117,8 @@ export class MypackagesPage implements OnInit {
           p['height'],
           p['width'],
           //'Delivered'
-          p['status']
+          p['status'],
+          p['pin']
         )
       });
 
@@ -355,7 +357,8 @@ constructor(
       this.kilograms,
       this.height,
       this.width,
-      "Ready"
+      "Ready",
+      this.pin
     );
 
     console.log(newPackage);
@@ -429,7 +432,8 @@ constructor(
         this.kilograms,
         this.height,
         this.width,
-        'Ready'
+        'Ready',
+        this.pin
       );
 
       console.log(newPackage);
@@ -523,7 +527,7 @@ constructor(
 
 
   makePackage(emailSender, id, namePackage, senderAdress, receiverAdress, receiverName, senderName, phoneNumberReceiver, 
-    phoneNumberSender, length, kilograms, height, width, status){
+    phoneNumberSender, length, kilograms, height, width, status, pin){
     return {
       "emailSender": emailSender,
       "id": id, 
@@ -542,11 +546,12 @@ constructor(
       "width": width,
       "ratingShow": false,
       "rating": -1,
+      "pin": pin
     };
   }
 
   pushCard(id, namePackage, senderAdress, receiverAdress, receiverName, senderName, phoneNumberReceiver,
-    phoneNumberSender, length, kilograms, height, width, status)
+    phoneNumberSender, length, kilograms, height, width, status, pin)
   {
 
     this.packages.push(this.makePackage(
@@ -563,7 +568,8 @@ constructor(
       kilograms,
       height,
       width,
-      status
+      status,
+      pin
     ));
 
     this.clearAddPackageInputs();

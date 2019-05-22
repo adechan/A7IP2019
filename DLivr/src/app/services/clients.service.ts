@@ -57,6 +57,23 @@ export class ClientsService implements AfterViewInit {
     });
   }
 
+  acceptPackage(id:string){
+    console.log(this.accessToken);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + this.accessToken
+      })
+    };
+
+    const body = {
+      "id" : id,
+      "status": "Accepted"
+    }
+
+    return this.http.put('http://localhost:8298/package-management/packages/modifyStatus', body, httpOptions);
+  }
+
   // LOGIN : post
   login(credentials) {
 

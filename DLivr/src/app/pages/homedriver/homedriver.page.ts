@@ -4,6 +4,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ClientsService } from 'src/app/services/clients.service';
 import { HttpClient } from '@angular/common/http';
 import { debug } from 'util';
+import { AngularDelegate } from '@ionic/angular';
 declare var google: any;
 
 @Component({
@@ -13,6 +14,7 @@ declare var google: any;
 })
 
 export class HomedriverPage implements OnInit {
+
 
   packageArray: PackageFormal[] = [];
 
@@ -29,6 +31,16 @@ export class HomedriverPage implements OnInit {
     marker: any;
     apiKey: any = 'AIzaSyCzbVg-JhZ5enrOtt6KwzDFqG9_7C-vSYo'; /*Your API Key*/
 
+    public selectPackage(id: string){
+
+
+      for (let i = 0; i < this.packageArray.length; i++) {
+        console.log(this.packageArray[i]);
+        if(this.packageArray[i].id.toString() == id){
+          this.selectedPackage = this.packageArray[i];
+        }
+      }
+    };
 constructor(
   public zone: NgZone, 
   public geolocation: Geolocation,
@@ -55,7 +67,7 @@ constructor(
          this.markerOptions.title = 'My Location';
          this.markerOptions.label = '1';
          this.marker = new google.maps.Marker(this.markerOptions);
-    }, 0);
+    }, 3000);
 
     userService.getPackagesInAreaOf('Iasi').subscribe (data => {
       this.packages = Object.values(data);
@@ -93,6 +105,14 @@ constructor(
     });
   }
 
+  public acceptPackageRequest(){
+    this.userService.acceptPackage(this.selectedPackage.id.toString())
+    .subscribe(data => {
+      console.log(data);
+      // this.userService.presentWarning("Attention", data['message']);
+    })
+  }
+
   public test(address: string){
    this.http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI(address) +
    '&key=AIzaSyCzbVg-JhZ5enrOtt6KwzDFqG9_7C-vSYo').subscribe(data => {
@@ -123,38 +143,12 @@ constructor(
 
     marker.addListener('click', function() {
       this.map.setCenter(marker.getPosition());
-      this.packageArray.forEach (  p => {
-        if(p['id'] === Number.parseInt(marker.label, 2) ){
-          this.selectedPackage = p;
-          console.log('selected: ' + p);
-        }
-      });
+      this.selectPackage(marker.label);
     });
    });
   }
 
-  public selectPackage(id: string){
 
-    this.packages.forEach(p => {
-      const pack = new PackageFormal(
-          p['height'],
-          p['id'],
-          p['kilograms'],
-          p['length'],
-          p['phoneNumberReceiver'],
-          p['phoneNumberSender'],
-          p['receiverAdress'],
-          p['receiverName'],
-          p['senderName'],
-          p['senderAdress'],
-          p['width']);
-
-          if( p['id'] === id ){
-            this.selectedPackage = pack;
-            console.log('selected: ' + p);
-          }
-    });
-  }
 
   ngOnInit() {
 
