@@ -34,6 +34,7 @@ export class MypackagesPage implements OnInit {
   selectedPackage = [];
 
   id: string = "";
+  pin: string = "";
 
   rating;
 
@@ -116,7 +117,8 @@ export class MypackagesPage implements OnInit {
           p['height'],
           p['width'],
           //'Delivered'
-          p['status']
+          p['status'],
+          p['pin']
         )
       });
 
@@ -172,8 +174,8 @@ constructor(
     public formBuilder: FormBuilder,
     public modalController: ModalController
   ) {
-
-   
+    if (!userService.loggedIn)
+      this.userService.gotoLoginPage();
 
     console.log('email received in mypackages: ' + this.userService.email);
 
@@ -355,7 +357,8 @@ constructor(
       this.kilograms,
       this.height,
       this.width,
-      "Ready"
+      "Ready",
+      this.pin
     );
 
     console.log(newPackage);
@@ -429,7 +432,8 @@ constructor(
         this.kilograms,
         this.height,
         this.width,
-        'Ready'
+        'Ready',
+        this.pin
       );
 
       console.log(newPackage);
@@ -523,13 +527,14 @@ constructor(
 
 
   makePackage(emailSender, id, namePackage, senderAdress, receiverAdress, receiverName, senderName, phoneNumberReceiver, 
-    phoneNumberSender, length, kilograms, height, width, status){
+    phoneNumberSender, length, kilograms, height, width, status, pin){
     return {
       "emailSender": emailSender,
       "id": id, 
       "number": (this.packages.length + 1).toString(),
       "namePackage": namePackage,
       "status": status,
+      //   "senderAdress": encodeURI(senderAdress),
       "senderAdress": senderAdress,
       "receiverAdress": receiverAdress,
       "receiverName": receiverName,
@@ -542,11 +547,12 @@ constructor(
       "width": width,
       "ratingShow": false,
       "rating": -1,
+      "pin": pin
     };
   }
 
   pushCard(id, namePackage, senderAdress, receiverAdress, receiverName, senderName, phoneNumberReceiver,
-    phoneNumberSender, length, kilograms, height, width, status)
+    phoneNumberSender, length, kilograms, height, width, status, pin)
   {
 
     this.packages.push(this.makePackage(
@@ -563,7 +569,8 @@ constructor(
       kilograms,
       height,
       width,
-      status
+      status,
+      pin
     ));
 
     this.clearAddPackageInputs();
