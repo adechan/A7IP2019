@@ -89,10 +89,10 @@ export class ClientsService
         'Authorization': 'Bearer ' + this.accessToken
       })
     };
-
+console.log('Id of the accepted: ' + id);
     const body = {
-      "id" : id,
-      "status": "Accepted"
+      'id' : id.toString(),
+      'status': 'Accepted'
     }
 
     return this.http.put('http://localhost:8298/package-management/packages/modifyStatus', body, httpOptions);
@@ -274,7 +274,7 @@ export class ClientsService
 
   // HOMEPAGE_ driver: get
   getPackagesInAreaOf(location: String) {
-    return this.http.get('http://localhost:8298/package-management/packages/getPackagesNear/'+ location, this.makeAuthorizedHeader());
+    return this.http.get('http://localhost:8298/package-management/packages/getPackagesNear/' + location, this.makeAuthorizedHeader());
   }
   
   // HOMEPAGE_driver Modify Status: put
@@ -318,7 +318,8 @@ export class ClientsService
       "status" : "In Delivery"
     };
     return this.http.put('http://localhost:8298/package-management/packages/modifyStatus',body, this.makeAuthorizedHeader());
-  
+  }
+
   // FORGOT_PASSWORD: get
   generatePassword(email : String)
   {
@@ -328,7 +329,7 @@ export class ClientsService
       })
     };
 
-    return this.http.get('http://localhost:8298/account-management/passwordRecovery/' + email, httpOptions);
+    return this.http.get('http://localhost:8298/account-management/passwordRecovery/' + this.email, httpOptions);
   }
 
   // GET_PROFILE_INFO_ driver: get

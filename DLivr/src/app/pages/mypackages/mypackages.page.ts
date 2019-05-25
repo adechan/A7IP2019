@@ -35,7 +35,6 @@ export class MypackagesPage implements OnInit {
   selectedPackage = [];
 
   id: string = "";
-  pin: string = "";
 
   rating;
 
