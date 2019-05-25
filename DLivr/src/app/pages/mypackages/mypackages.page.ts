@@ -30,11 +30,11 @@ export class MypackagesPage implements OnInit {
   kilograms: string ="";
   height: string = "";
   width: string = "";
+  pin: string = "";
 
   selectedPackage = [];
 
   id: string = "";
-  pin: string = "";
 
   rating;
 
