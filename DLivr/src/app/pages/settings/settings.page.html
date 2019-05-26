@@ -66,47 +66,51 @@
             
             <ion-item>
               <ion-label color = "light">
-                <p>{{this.address1}}</p>
+                <p> {{this.address1}}</p>
               </ion-label>
-              <ion-icon name="home" color="tertiary" slot="start" ></ion-icon>
-              <ion-icon name="create" color ="light"  (click) = "changeAddress1()" slot ="end"></ion-icon>
+              <ion-icon  name="pin" color ="secondary" size="small" (click) = "changeAddress1()" slot ="end"></ion-icon>
+              <ion-icon  name="save" color ="light" size="small" (click) = "saveAddress1()" slot = "end"></ion-icon>
+              <ion-icon *ngIf = "showDeleteF1() === true" name="trash" color ="danger" size="small" (click) = "deleteAddress1()" slot="end"></ion-icon>
             </ion-item>
             
             <ion-item>
                 <ion-label color = "light">
-                  <p>{{this.address2}}</p>
+                  <p> {{this.address2}}</p>
                 </ion-label>
-                <ion-icon name="home" color="tertiary" slot="start" ></ion-icon>
-                <ion-icon name="create" color ="light"  (click) = "changeAddress2()" slot ="end"></ion-icon>
+                <ion-icon  name="pin" color ="secondary" size="small" (click) = "changeAddress2()" slot ="end"></ion-icon>
+                <ion-icon  name="save" color ="light"size="small" (click) = "saveAddress2()" slot = "end"></ion-icon>
+                <ion-icon *ngIf = "showDeleteF2() === true" name="trash" color ="danger" size="small" (click) = "deleteAddress2()" slot="end"></ion-icon>
             </ion-item>
 
             <ion-item>
                 <ion-label color = "light">
-                  <p>{{this.address3}}</p>
+                  <p> {{this.address3}}</p>
                 </ion-label>
-                <ion-icon name="home" color="tertiary" slot="start" ></ion-icon>
-                <ion-icon name="create" color ="light"  (click) = "changeAddress3()" slot ="end"></ion-icon>
+                <ion-icon name="pin" color ="secondary"size="small"  (click) = "changeAddress3()" slot ="end"></ion-icon>
+                <ion-icon  name="save" color ="light"size="small" (click) = "saveAddress3()" slot = "end"></ion-icon>
+                <ion-icon *ngIf = "showDeleteF3() === true" name="trash" color ="danger" size="small" (click) = "deleteAddress3()" slot="end"></ion-icon>
               </ion-item>
               
               <ion-item>
                   <ion-label color = "light">
-                    <p>{{this.address4}}</p>
+                    <p> {{this.address4}}</p>
                   </ion-label>
-                  <ion-icon name="home" color="tertiary" slot="start" ></ion-icon>
-                  <ion-icon name="create" color ="light"  (click) = "changeAddress4()" slot ="end"></ion-icon>
+                  <ion-icon  name="pin" color ="secondary" size="small" (click) = "changeAddress4()" slot ="end"></ion-icon>
+                  <ion-icon  name="save" color ="light" size="small"(click) = "saveAddress4()" slot = "end"></ion-icon>
+                  <ion-icon *ngIf = "showDeleteF4() === true" name="trash" color ="danger" size="small" (click) = "deleteAddress4()" slot="end"></ion-icon>
               </ion-item>
 
               <ion-item>
                   <ion-label color = "light">
-                    <p>{{this.address5}}</p>
+                    <p> {{this.address5}}</p>
                   </ion-label>
-                  <ion-icon name="home" color="tertiary" slot="start" ></ion-icon>
-                  <ion-icon name="create" color ="light"  (click) = "changeAddress5()" slot ="end"></ion-icon>
-              </ion-item>
-
+                  <ion-icon  name="pin" color ="secondary" size="small"  (click) = "changeAddress5()" slot ="end"></ion-icon>
+                  <ion-icon  name="save" color ="light" size="small" (click) = "saveAddress5()" slot = "end"></ion-icon>
+                  <ion-icon *ngIf = "showDeleteF5() === true" name="trash" color ="danger" size="small" (click) = "deleteAddress5()" slot="end"></ion-icon>
+              </ion-item>          
 
             </div>
-            <ion-button id="passwordbutton" size="large" expand="block" color = "success" (click)="changePassword()"   type = "submit" value="Reset Password">Reset Password</ion-button>
+            <ion-button id="passwordbutton"  expand="block" color = "success" (click)="changePassword()"   type = "submit" value="Reset Password">Reset Password</ion-button>
 
             </ion-card>
       

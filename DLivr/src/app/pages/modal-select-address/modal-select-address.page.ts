@@ -18,7 +18,9 @@ export class ModalSelectAddressPage {
 
   chosenAddress = '';
 
-  constructor(public httpClient: HttpClient, public geolocation: Geolocation, private modalController: ModalController) { 
+  constructor(public httpClient: HttpClient, public geolocation: Geolocation, private modalController: ModalController) 
+  { 
+    console.log(google.maps);
     this.googleAutocomplete = new google.maps.places.AutocompleteService();
     this.autocomplete = { input: '' };
     this.autocompleteItems = [];
