@@ -25,8 +25,22 @@ export class ClientsService
   // host: String = 'localhost';
   // host: String = '192.168.0.102';
 
+  loadScript(name : string, url : string) : void
+  {
+    const script = document.createElement('script');
+    
+    script.id = 'name';
+    script.src = url;
+    document.head.appendChild(script);
+  }
+
   constructor(private http: HttpClient, public alertController: AlertController, public router: Router) 
   {
+    /*load google map script dynamically */
+
+    this.loadScript('googleMaps', 'https://maps.googleapis.com/maps/api/js?key=' + this.apiKey);
+    this.loadScript('googlePlaces', 'https://maps.googleapis.com/maps/api/js?libraries=places&key=' + this.apiKey);
+
     // BROKEN??????
     // const token = JSON.parse(localStorage.getItem('DLivr_accessToken'));
     // console.log("Access token in local storage = " + token);

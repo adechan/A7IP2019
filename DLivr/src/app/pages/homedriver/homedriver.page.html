@@ -12,6 +12,7 @@
 
     <!--create a element for map. #Map - identifier -->
     <div #Map class="map"></div>
+<ng-container *ngIf="!(selectedPackage === null)">
 
   <ion-card color="dark">
     <ion-label color="primary" style="padding-left: 20px;">Start Point Information</ion-label>
@@ -88,6 +89,6 @@
       <ion-button style="margin-top: 10px;" (click)="acceptPackageRequest()" id = "register" size="medium"  color = "success" expand="full">ACCEPT PACKAGE</ion-button>
   
   </ion-card>
-    
+</ng-container>
 </ion-content>
 
