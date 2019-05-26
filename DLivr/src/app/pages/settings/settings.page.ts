@@ -34,7 +34,25 @@ export class SettingsPage implements OnInit {
     return false;
   }
 
+  public showSaveF1(){
+    if (this.address1 != "")
+    {
+      return true;
+    }
+
+    return false;
+  }
+
   public showDeleteF2(){
+    if (this.address2 != "")
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  public showSaveF2(){
     if (this.address2 != "")
     {
       return true;
@@ -52,7 +70,25 @@ export class SettingsPage implements OnInit {
     return false;
   }
 
+  public showSaveF3(){
+    if (this.address3 != "")
+    {
+      return true;
+    }
+
+    return false;
+  }
+
   public showDeleteF4(){
+    if (this.address4 != "")
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  public showSaveF4(){
     if (this.address4 != "")
     {
       return true;
@@ -70,7 +106,14 @@ export class SettingsPage implements OnInit {
     return false;
   }
 
+  public showSaveF5(){
+    if (this.address5 != "")
+    {
+      return true;
+    }
 
+    return false;
+  }
   
   public pickSenderAddress() {
     this.presentSenderAddressModal();
