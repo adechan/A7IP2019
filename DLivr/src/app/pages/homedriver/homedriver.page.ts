@@ -67,17 +67,6 @@ export class HomedriverPage implements OnInit {
       /* modifica asta cu un ngif in html*/
       this.selectedPackage = new Package(0, 0, 0, 0, '', '', '', '', '', '', 0);
 
-       /*load google map script dynamically */
-       const script = document.createElement('script');
-       script.id = 'googleMap';
-       if (this.apiKey) {
-           script.src = 'https://maps.googleapis.com/maps/api/js?key=' + this.apiKey;
-       } else {
-           script.src = 'https://maps.googleapis.com/maps/api/js?key=';
-       }
-       document.head.appendChild(script);
-
-
       /*Get Current location*/
       this.geolocation.getCurrentPosition().then((position) =>  {
           this.loc.lat = position.coords.latitude;

@@ -5,7 +5,6 @@ import { ClientsService } from 'src/app/services/clients.service';
 import { ModalSelectAddressPage } from '../modal-select-address/modal-select-address.page';
 import { OverlayEventDetail } from '@ionic/core';
 
-declare var google: any;
 
 @Component({
   selector: 'app-mypackages',
@@ -145,6 +144,7 @@ export class MypackagesPage implements OnInit {
       .subscribe(data => {
         console.log("rating: sent!");
       }, error => {
+        this.userService.presentWarning("Atentie", "A aparut o problema cu informatia trimisa de dvs!");
         console.log("Can't send the rating!");
         console.log(error);
       });
@@ -371,7 +371,7 @@ constructor(
     }, error => {
       console.log('Unable to register package');
       console.log(error);
-      this.userService.presentWarning("Formular Invalid", "A aparut o problema cu informatiile pe care le-ati trimis");
+      this.userService.presentWarning("Formular Invalid", "A aparut o problema cu informatiile pe care le-ati trimis!");
     });
   }
 
@@ -446,7 +446,7 @@ constructor(
       }, error => {
         console.log('Unable to register package');
         console.log(error);
-        this.userService.presentWarning("Formular Invalid", "A aparut o problema cu informatiile pe care le-ati trimis");
+        this.userService.presentWarning("Formular Invalid", "A aparut o problema cu informatiile pe care le-ati trimis!");
       });
     }
   }
