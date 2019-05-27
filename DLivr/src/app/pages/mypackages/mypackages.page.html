@@ -17,14 +17,19 @@
           <ion-card-content id ="ioncardcontent" no-padding>
             <ion-item id="cardListItem" lines="none" color="blue">
              <p class ="count" > {{package.number}} </p>
-             <ion-label id ="cardListLabel">     
+             <ion-label id ="cardListLabel">   
+              
               <ion-card-header>
-                <ion-card-title> {{package.namePackage}} </ion-card-title>
+                <ion-card-title> {{package.namePackage}} pin: {{package.pin}} </ion-card-title>
               </ion-card-header>
 
-              <ion-card-content> Status: {{package.status}} Pin: {{package.pin}}</ion-card-content>
+              <ion-card-content> Status: {{package.status}}
+                  <!-- <p class = "inregistredPackage" *ngIf="package.status !== 'Accepted'" style = " color: rgb(73, 73, 73); margin-left: 0px !important;" no-padding>Your package was inregistred.</p>
+           -->
+              </ion-card-content>
+              <!-- <ion-button *ngIf="package.status === 'Accepted'" no-padding color="danger" (click)="changeStatusAcceptedInReady(package.number)"> Refuse Driver </ion-button> -->
 
-            </ion-label>
+               </ion-label>
 
             <ion-icon *ngIf="package.status === 'Ready'" 
               style="display: block;" id = "ionButtonIconEdit" 
@@ -46,6 +51,19 @@
               slot="end" name="trash"
               (click)="deletePackage(package.number)">
             </ion-icon>
+
+            <ion-icon *ngIf = "package.status === 'Accepted'" 
+            id ="ionDriverButton" color="light" size ="small" 
+            slot="end" name="person"
+            (click)="showDriverDetail(package.number)">
+          </ion-icon>
+
+            <ion-icon *ngIf = "package.status === 'Accepted'" 
+            id ="ionChangeStatusButton" color="light" size ="small" 
+            slot="end" name="people"
+            (click)="changeStatusAcceptedInReady(package.number)">
+          </ion-icon>
+
             
             <div>
               <ion-card-header>
@@ -62,8 +80,11 @@
    
             </ion-card-content>
             </div>
+
            </ion-item>
+
           </ion-card-content>
+
         </ion-card>
   
         <div id ="noPackageText" style="display: block;">
@@ -102,10 +123,9 @@
             </div>
 
             <p id = "formtext"> Receiver's Address</p> 
+
             <ion-item lines="none" class ="itemform">
-              <ion-input formControlName = "receiverAdress" name = "receiverAdress" class ="inputClass" id = "pickupAddressInput" [(ngModel)]="receiverAdress" type = "text" placeholder = "Receiver's Address" required></ion-input>
-            
-              <ion-button (click)="pickReceiverAddress()"> Pick receiver Address </ion-button>
+              <ion-input  (ionFocus)="pickReceiverAddress()"  formControlName = "receiverAdress" name = "receiverAdress" class ="inputClass" id = "pickupAddressInput" [(ngModel)]="receiverAdress" type = "text" placeholder = "Receiver's Address" required></ion-input>
             </ion-item>
 
             <div  style="color:rgb(253, 101, 101); font-size: 12px;" class = "error-messages" *ngIf=" f.receiverAdress.errors">
@@ -117,8 +137,7 @@
 
             <p id = "formtext"> Sender's Address </p> 
             <ion-item lines="none"  class ="itemform">
-             <ion-input formControlName = "senderAdress" name = "senderAdress" class ="inputClass" id = "deliveryAddressInput" [(ngModel)]="senderAdress" type = "text" placeholder = " Sender's Address" required></ion-input>
-             <ion-button (click)="pickSenderAddress()"> Pick Sender Address </ion-button>
+             <ion-input (ionFocus)="pickSenderAddress()" formControlName = "senderAdress" name = "senderAdress" class ="inputClass" id = "deliveryAddressInput" [(ngModel)]="senderAdress" type = "text" placeholder = " Sender's Address" required></ion-input>
             </ion-item>
 
             <div  style="color:rgb(253, 101, 101); font-size: 12px;" class = "error-messages" *ngIf=" f.senderAdress.errors">
@@ -274,7 +293,7 @@
   
               <p id = "formtext"> Receiver's Address</p> 
               <ion-item lines="none" class ="itemform">
-                <ion-input formControlName = "receiverAdress" name = "receiverAdress" class ="inputClass"  id = "pickupAddressInput" [(ngModel)]="receiverAdress" type = "text" placeholder="Receiver's Address" value ="{{selectedPackage.receiverAdress}}" required></ion-input>
+                <ion-input  (ionFocus)="pickReceiverAddress()" formControlName = "receiverAdress" name = "receiverAdress" class ="inputClass"  id = "pickupAddressInput" [(ngModel)]="receiverAdress" type = "text" placeholder="Receiver's Address" value ="{{selectedPackage.receiverAdress}}" required></ion-input>
               </ion-item>
 
             <div  style="color:rgb(250, 146, 146); font-size: 12px;" class = "error-messages" *ngIf=" f.receiverAdress.errors">
@@ -285,8 +304,9 @@
 
   
               <p id = "formtext"> Sender's Address </p> 
+              <ion-button color="dark" expand="block" (click)="pickSenderAddress()"> Pick Sender Address </ion-button>
               <ion-item lines="none"  class ="itemform">
-               <ion-input formControlName = "senderAdress" name = "senderAdress" class ="inputClass"  id = "deliveryAddressInput" [(ngModel)]="senderAdress" type = "text" placeholder="Sender's Address" value ="{{selectedPackage.senderAdress}}" required></ion-input>
+               <ion-input (ionFocus)="pickSenderAddress()" formControlName = "senderAdress" name = "senderAdress" class ="inputClass"  id = "deliveryAddressInput" [(ngModel)]="senderAdress" type = "text" placeholder="Sender's Address" value ="{{selectedPackage.senderAdress}}" required></ion-input>
               </ion-item>
 
             <div  style="color:rgb(250, 146, 146); font-size: 12px;" class = "error-messages" *ngIf=" f.senderAdress.errors">

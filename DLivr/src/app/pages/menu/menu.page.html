@@ -17,15 +17,21 @@
         </ion-item>
 
         <!-- Switch User Type Button -->
-          <ion-button fill="outline" *ngIf="userService.userType === 'client'" color="secondary" (click)="changeUserType()" expand="full" size="medium" style="margin: 0px 10px 20px 10px">
+        <ion-menu-toggle auto-hide="false">
+
+        <ion-button fill="outline" *ngIf="userService.userType === 'client'" color="secondary" (click)="changeUserType()" expand="full" size="medium" style="margin: 0px 10px 20px 10px">
             <ion-icon name="car" style="padding-right: 20px;"></ion-icon>
             SWITCH TO DRIVER
           </ion-button>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle auto-hide="false">
           <ion-button  fill="outline" *ngIf="userService.userType === 'driver'" color="primary" (click)="changeUserType()" expand="full" size="medium" style="margin: 0px 10px 20px 10px">
             <ion-icon name="cube" style="padding-right: 20px;"></ion-icon>
             SWITCH TO CLIENT
           </ion-button>
-      
+        </ion-menu-toggle>
+        
          <!-- Menu Buttons -->
         <ng-container *ngIf="userService.userType === 'client'">
           <ion-menu-toggle auto-hide="false" *ngFor="let p of clientPages">

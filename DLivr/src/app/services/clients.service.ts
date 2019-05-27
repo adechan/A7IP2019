@@ -38,8 +38,8 @@ export class ClientsService
   {
     /*load google map script dynamically */
 
-    this.loadScript('googleMaps', 'https://maps.googleapis.com/maps/api/js?key=' + this.apiKey);
-    this.loadScript('googlePlaces', 'https://maps.googleapis.com/maps/api/js?libraries=places&key=' + this.apiKey);
+    // this.loadScript('googleMaps', 'https://maps.googleapis.com/maps/api/js?key=' + this.apiKey);
+    // this.loadScript('googlePlaces', 'https://maps.googleapis.com/maps/api/js?libraries=places&key=' + this.apiKey);
 
     // BROKEN??????
     // const token = JSON.parse(localStorage.getItem('DLivr_accessToken'));
@@ -287,16 +287,22 @@ console.log('Id of the accepted: ' + id);
   }
 
   // HOMEPAGE_ driver: get
-  getPackagesInAreaOf(location: String) {
-    return this.http.get('http://localhost:8298/package-management/packages/getPackagesNear/' + location, this.makeAuthorizedHeader());
+  getPackagesInAreaOf(address: string) {
+    return this.http.get('http://localhost:8298/package-management/packages/getPackagesNear/' + address, this.makeAuthorizedHeader());
   }
-  
+
+  getPackagesNear(lat: string, long: string) {
+    // tslint:disable-next-line:max-line-length
+    return this.http.get('http://localhost:8298/package-management/packages/getPackagesNear/' + lat + '/' + long, this.makeAuthorizedHeader());
+
+  }
+
   // HOMEPAGE_driver Modify Status: put
   modifyStatus(id: String)
   {
     const body = {
-      "id" : id,
-      "status" : 'Accepted'
+      'id' : id,
+      'status' : 'Accepted'
     }
     return this.http.put('http://localhost:8298/package-management/packages/modifyStatus', body , this.makeAuthorizedHeader());
   }
@@ -334,6 +340,22 @@ console.log('Id of the accepted: ' + id);
     return this.http.put('http://localhost:8298/package-management/packages/modifyStatus',body, this.makeAuthorizedHeader());
   }
 
+    /*PUT /packages/modifyStatusBack  in body primeste id-ul pachetului si 
+returneaza un mesaj de success sau de eroare. O sa se schimbe statusul din Accepted in Ready 
+daca requestul este trimis de un sender si statusul pachetului este Accepted.*/
+
+modifyStatusReady(id: number){
+  console.log(' Body ul ptr "Ready" ');
+  console.log(' id ' + id); //Ready
+  const body = {
+    "id" : id,
+    "status": "Ready"
+  };
+
+  return this.http.put('http://localhost:8298/package-management/packages/modifyStatusBack', body, this.makeAuthorizedHeader());
+}
+
+
   // FORGOT_PASSWORD: get
   generatePassword(email : String)
   {
@@ -364,6 +386,7 @@ console.log('Id of the accepted: ' + id);
   {
     return this.http.get("http://localhost:8298/rating-management/rating/getRating/" + email, this.makeAuthorizedHeader());
   }
+
 
   // POST_PROFILE_INFO_ sender : post NAME
   sendProfileInfoName(name)

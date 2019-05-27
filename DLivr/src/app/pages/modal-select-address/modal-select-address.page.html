@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-searchbar [(ngModel)]="autocomplete.input" (ionChange)="updateSearchResults()" color="light" placeholder="Type here"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" color="light" placeholder="Type here"></ion-searchbar>
 
     <ion-list [hidden]="autocompleteItems.length == 0">
         <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)" color >

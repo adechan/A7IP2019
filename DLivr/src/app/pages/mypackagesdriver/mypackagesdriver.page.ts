@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientsService } from 'src/app/services/clients.service';
 import { AlertController, ModalController } from '@ionic/angular';
-import { ModalSelectAddressPage } from '../modal-select-address/modal-select-address.page';
 
  interface myData
 {
@@ -20,20 +19,13 @@ export class MypackagesdriverPage implements OnInit {
   constructor(private myFirstService: ClientsService,
               public alertController: AlertController,
               private alertCtrl: AlertController,
-              public modalController: ModalController) {
+              ) {
     /*this.packages = JSON.parse(localStorage.getItem("mypackages.packages"));
     console.log("packages: " + JSON.stringify(this.packages[0].pickupAddress));*/
 
   }
 
-  async presentModal() {
-    const modal = await this.modalController.create({
-      component: ModalSelectAddressPage,
-      componentProps: { value: 123 }
-    });
-    return await modal.present();
-  }
-
+  
   ngOnInit() {
     this.myFirstService.mypackagesdriverget()
       .subscribe(data  => {
@@ -49,15 +41,14 @@ export class MypackagesdriverPage implements OnInit {
       });
   }
 
-  markPackageAsDelivered(id: number){
-    console.log(" id in ts ", id );
-    this.presentPrompt(id);
+  markPackageAsDelivered(){
+    this.presentPrompt();
   }
 
-  async presentPrompt(id: number) {
-
+  async presentPrompt() {
     let alert = await this.alertCtrl.create({
-     // title: 'PIN',
+      header: 'Enter PIN',
+      message: 'Delivery PIN needed to mark this package as delivered:',
       inputs: [
         {
           name: 'PIN',
@@ -68,36 +59,11 @@ export class MypackagesdriverPage implements OnInit {
         {
           text: 'Cancel',
           role: 'cancel',
+
         },
         {
           text: 'Ok',
-          //role: 'ok',
-
-          handler: data => {
-           // this.pin = (data.PIN);
-            console.log(" package id  ", id );
-            console.log(" data.PIN  ", data.PIN );
-         //   console.log("  this.pin = JSON.stringify(data.PIN); ", this.pin);
-              this.myFirstService.modifyStatusDelivered(id,data.PIN)//iau pinul
-              .subscribe(
-                data =>{
-                  console.log("oh well, package delivered ! ", data);
-                  this.myFirstService.mypackagesdriverget()
-                  .subscribe(data  => {
-                    console.log(" My accepted packages : ", data);
-                     this.packages = data as [];
-              
-                  }, error => {
-                    console.log(error);
-                    this.presentWarning('Atentie!', error.error['message']);
-                  });
-                }, error => {
-                  console.log(error);
-                  this.presentWarning('Atentie!', error.error['message']);
-                });
-  
-          }
-
+          role: 'ok',
         }
       ]
     });

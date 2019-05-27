@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { MenuController, ModalController } from '@ionic/angular';
+import { MenuController, ModalController, AlertController } from '@ionic/angular';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ClientsService } from 'src/app/services/clients.service';
 import { ModalSelectAddressPage } from '../modal-select-address/modal-select-address.page';
@@ -18,6 +18,12 @@ export class MypackagesPage implements OnInit {
   addPackageForm: FormGroup;
   packages = [];
 
+  ratingD: String = '';
+  nameD: String = '';
+  phoneNumberD: String = '';
+
+
+  emailDriver: string = "";
   namePackage: string = "";
   senderAdress: string = "";
   receiverAdress: string = "";
@@ -101,9 +107,11 @@ export class MypackagesPage implements OnInit {
 
       const packages = Object.values(data);
       console.log(packages);
+
       packages.forEach(p => {
         this.pushCard(
           p['id'],
+          p['emailDriver'],
           p['namePackage'],
           p['senderAdress'],
           p['receiverAdress'],
@@ -153,6 +161,150 @@ export class MypackagesPage implements OnInit {
     this.packages[i - 1]['ratingShow'] = !show;
   }
 
+  
+  async changeStatusAcceptedInReady(i : number)
+  {
+    console.log('id ' + this.packages[i - 1]['id']);
+
+    const alert = await this.alertController.create({
+      header: "Do you want to find another driver?",
+      buttons: 
+      [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('Pressed the button cancel');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Pressed the button yes');
+
+            this.userService.modifyStatusReady(this.packages[i - 1]['id'])
+            .subscribe(data => {
+              console.log("refuse driver!");
+              this.userService.presentWarning("Atentie", "Ai anulat prealuarea pachetului de catre sofer! Pachetul tau asteapta sa fie acceptat de altcineva!");
+        
+              this.packages = [];
+              this.userService.getPackages()
+              .subscribe(data => {
+                console.log(data);
+        
+                const packages = Object.values(data);
+                console.log(packages);
+        
+                packages.forEach(p => {
+                  this.pushCard(
+                    p['id'],
+                    p['emailDriver'],
+                    p['namePackage'],
+                    p['senderAdress'],
+                    p['receiverAdress'],
+                    p['receiverName'],
+                    p['senderName'],
+                    p['phoneNumberReceiver'],
+                    p['phoneNumberSender'],
+                    p['length'],
+                    p['kilograms'],
+                    p['height'],
+                    p['width'],
+                    //'Delivered'
+                    p['status'],
+                    p['pin']
+                  )
+                });
+        
+                if (packages.length > 0)
+                {
+                  var divNoPackage = document.getElementById("noPackageText");
+                  divNoPackage.style.display = "none";
+                }
+        
+              }, error => {
+                console.log("Unable to retrieve packages from server");
+                console.log(error);
+              });
+        
+            }, error => {
+              this.userService.presentWarning("Atentie", "Nu puteti refuza preluarea pachetului!");
+              console.log("Can't refuse driver!");
+              console.log(error);
+            });
+          }
+        },
+      ]
+    });
+    await alert.present();
+
+   
+  }
+
+  async showDriverDetail(i : number)
+  {
+
+    const pack = this.packages[i - 1];
+    const email = pack['emailDriver'];
+
+    console.log('email ' + email);
+
+    this.userService.getProfileInformationDriver(email)
+    .subscribe(data => 
+      {
+        console.log('Getting data from server'+  JSON.stringify(data));
+        this.emailDriver = data['emailDriver'];
+        this.nameD = data['name'];
+        this.phoneNumberD = data['phone_number'];
+  
+        this.userService.getRating(email)
+        .subscribe(async data => {
+          console.log('Getting rating from server' + JSON.stringify(data));
+
+          this.ratingD = data['rating'];
+
+          const alert = await this.alertController.create({
+            header: "Drivers's contact info",
+            inputs:
+            [
+              {
+                name: 'name',
+                value: 'Name: ' + this.nameD,
+              },
+              {
+                name: 'phone_number',
+                value: 'Phone number: ' +  this.phoneNumberD,
+              },
+              {
+                name: 'rating',
+                value: 'Rating: ' + this.ratingD,
+              }
+            ],
+            buttons: 
+            [
+              {
+                text: 'Ok',
+                handler: () => {
+                  console.log('Pressed the button cancel');
+                }
+              },
+            ]
+          });
+          await alert.present();
+    
+        }, error => {
+          console.log('Unable to get rating');
+          console.log(error);
+        });
+  
+      }, error => {
+        console.log('Unable to get info');
+        console.log(error);
+      });
+
+    
+    }
+
+
   getRatingIcon(state: boolean)
   {
     if (state)
@@ -172,6 +324,7 @@ constructor(
     private menuCtrl: MenuController, 
     private userService: ClientsService,
     public formBuilder: FormBuilder,
+    public alertController: AlertController,
     public modalController: ModalController
   ) {
     if (!userService.loggedIn)
@@ -304,7 +457,7 @@ constructor(
 
   setAddPackageInputs(pack)
   {
-    this.namePackage = pack.name;
+    this.namePackage = pack.namePackage;
 
     this.senderName = pack.senderName;
     this.senderAdress = pack.senderAdress;
@@ -345,6 +498,7 @@ constructor(
 
     var newPackage = this.makePackage(
       this.userService.email,
+      '',
       this.selectedPackage['id'],
       this.namePackage, 
       this.senderAdress,
@@ -420,6 +574,7 @@ constructor(
 
       var newPackage = this.makePackage(
         this.userService.email,
+        "",
         -1,
         this.namePackage, 
         this.senderAdress,
@@ -526,10 +681,11 @@ constructor(
   }
 
 
-  makePackage(emailSender, id, namePackage, senderAdress, receiverAdress, receiverName, senderName, phoneNumberReceiver, 
+  makePackage(emailSender, emailDriver, id, namePackage, senderAdress, receiverAdress, receiverName, senderName, phoneNumberReceiver, 
     phoneNumberSender, length, kilograms, height, width, status, pin){
     return {
       "emailSender": emailSender,
+      "emailDriver": emailDriver,
       "id": id, 
       "number": (this.packages.length + 1).toString(),
       "namePackage": namePackage,
@@ -551,12 +707,13 @@ constructor(
     };
   }
 
-  pushCard(id, namePackage, senderAdress, receiverAdress, receiverName, senderName, phoneNumberReceiver,
+  pushCard(id, emailDriver, namePackage, senderAdress, receiverAdress, receiverName, senderName, phoneNumberReceiver,
     phoneNumberSender, length, kilograms, height, width, status, pin)
   {
 
     this.packages.push(this.makePackage(
       this.userService.email,
+      emailDriver,
       id,
       namePackage, 
       senderAdress, 
