@@ -292,14 +292,14 @@ console.log('Id of the accepted: ' + id);
   }
   
   // HOMEPAGE_driver Modify Status: put
-  modifyStatus(id: String)
-  {
-    const body = {
-      "id" : id,
-      "status" : 'Accepted'
-    }
-    return this.http.put('http://localhost:8298/package-management/packages/modifyStatus', body , this.makeAuthorizedHeader());
-  }
+  // modifyStatus(id: String)
+  // {
+  //   const body = {
+  //     "id" : id,
+  //     "status" : 'Accepted'
+  //   }
+  //   return this.http.put('http://localhost:8298/package-management/packages/modifyStatus', body , this.makeAuthorizedHeader());
+  // }
 
   modifyStatusDelivered(id: number, pin: number){
     console.log(' Body ul ptr "Delivered" ');
@@ -334,6 +334,21 @@ console.log('Id of the accepted: ' + id);
     return this.http.put('http://localhost:8298/package-management/packages/modifyStatus',body, this.makeAuthorizedHeader());
   }
 
+  /*PUT /packages/modifyStatusBack  in body primeste id-ul pachetului si 
+returneaza un mesaj de success sau de eroare. O sa se schimbe statusul din Accepted in Ready 
+daca requestul este trimis de un sender si statusul pachetului este Accepted.*/
+
+  modifyStatusReady(id: number){
+    console.log(' Body ul ptr "Ready" ');
+    console.log(' id ' + id); //Ready
+    const body = {
+      "id" : id,
+      "status": "Ready"
+    };
+
+    return this.http.put('http://localhost:8298/package-management/packages/modifyStatusBack', body, this.makeAuthorizedHeader());
+  }
+
   // FORGOT_PASSWORD: get
   generatePassword(email : String)
   {
@@ -352,6 +367,13 @@ console.log('Id of the accepted: ' + id);
     return this.http.get("http://localhost:8298/account-management/accountManagement/getProfileInformation/driver", this.makeAuthorizedHeader());
   }
 
+  // /accountManagement/getProfileInformation/driver/{email}
+  getProfileInformationDriver(email: String)
+  {
+    return this.http.get("http://localhost:8298/account-management/accountManagement/getProfileInformation/driver/" + email, this.makeAuthorizedHeader());
+  }
+
+  
   // GET_PROFILE_INFO_ sender: get
   getProfileInfoSender()
   {
