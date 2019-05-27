@@ -56,7 +56,6 @@ ion-card-content{
     color: rgb(73, 73, 73);
 }
 
-
 ion-item{
     background:rgb(219, 219, 219);
 }
@@ -92,6 +91,10 @@ ion-card-header{
 #ion-card-id-package
 {
     height: 70px;
+}
+
+.sc-ion-card-md-h {
+    background: rgb(219, 219, 219);
 }
 
 #addPackageItem, #editPackageItem{
@@ -164,6 +167,16 @@ ion-icon #ionButtonIconEdit{
     border-radius: 2px;
 }
 
+#ionDriverButton{
+    color: $white-color;
+    background: $black-color;
+    border-radius: 2px;
+}
+
+#ionChangeStatusButton{
+    background: $black-color;
+    border-radius: 2px;
+}
 
 #dontAddPackage, #dontSaveEditPackage{
     background: $red-color;
