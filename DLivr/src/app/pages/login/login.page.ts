@@ -31,7 +31,7 @@ export class LoginPage implements OnInit {
       )),
       email: new FormControl('', Validators.compose([
           Validators.required,
-          Validators.email
+          //Validators.email
       ]
      ))
     });

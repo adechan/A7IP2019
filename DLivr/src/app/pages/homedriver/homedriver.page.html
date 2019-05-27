@@ -12,9 +12,8 @@
 
     <!--create a element for map. #Map - identifier -->
     <div #Map class="map"></div>
-<ng-container *ngIf="!(selectedPackage === null)">
 
-  <ion-card color="dark">
+  <ion-card color="dark" *ngIf="didSelectPackage()">
     <ion-label color="primary" style="padding-left: 20px;">Start Point Information</ion-label>
     <ion-item>
       <ion-label color="light">
@@ -65,11 +64,12 @@
       <ion-label color="warning" style="padding-left: 20px;">Package Details</ion-label>
     <ion-item>
         <ion-label color="light">
-        <p> Kilograms: {{selectedPackage.kilograms}}</p>
-        <p> Length: {{selectedPackage.length}}</p>
+        <p> Weight: {{selectedPackage.kilograms}} kg.</p>
+        <p> Length / Width / Height:  {{selectedPackage.length}} / {{selectedPackage.width}} / {{selectedPackage.height}} m.</p>
+       <!-- <p> Length: {{selectedPackage.length}}</p>
         <p> Width: {{selectedPackage.width}}</p>
         <p> Height: {{selectedPackage.height}} </p>
-      
+      -->
       </ion-label>
           
         <ion-icon name="information-circle" color="warning" slot="start"></ion-icon>
@@ -78,9 +78,8 @@
       <ion-label color="tertiary" style="padding-left: 20px;">Delivery Details</ion-label>
     <ion-item>
         <ion-label color="light">
-        <p> Distance: distance </p>
-        <p> Est. payment: payment</p>
-        <p> Est. drive time: time</p>
+        <p> Distance: {{selectedPackage.distance}} km.</p>
+        <p> Payment: {{selectedPackage.price}} $</p>
       </ion-label>
           
         <ion-icon name="navigate" color="tertiary" slot="start"></ion-icon>
@@ -89,6 +88,9 @@
       <ion-button style="margin-top: 10px;" (click)="acceptPackageRequest()" id = "register" size="medium"  color = "success" expand="full">ACCEPT PACKAGE</ion-button>
   
   </ion-card>
-</ng-container>
-</ion-content>
+  <ion-card *ngIf="!didSelectPackage()"  style="padding: 20px;" >
+    <ion-icon name="information-circle"></ion-icon>
+    <ion-label color="light">Tap a marker to see details about a package.</ion-label>
+  </ion-card>
+  </ion-content>
 
